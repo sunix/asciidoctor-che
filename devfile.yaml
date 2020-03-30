@@ -1,0 +1,44 @@
+apiVersion: 1.0.0
+metadata:
+  generateName: ascii-doc-
+
+projects:
+  - source:
+      type: git
+      location: 'https://github.com/sunix/asciidoctor-che'
+    name: asciidoctor-che
+
+components:
+  - id: joaompinto/vscode-asciidoctor/latest
+    type: chePlugin
+  - alias: asciidoctor
+    mountSources: true
+    args:
+      - sleep
+      - infinity
+    memoryLimit: 768Mi
+    type: dockerimage
+    image: quay.io/sunix/asciidoctor
+
+commands:
+  - name: asciidoctor README.adoc
+    actions:
+      - type: exec
+        command: asciidoctor README.adoc
+        component: asciidoctor
+        workdir: /projects/asciidoctor-che
+
+  - name: asciidoctor-pdf README.adoc
+    actions:
+      - type: exec
+        command: asciidoctor-pdf README.adoc
+        component: asciidoctor
+        workdir: /projects/asciidoctor-che
+
+  - name: asciidoctor-epub3 README.adoc
+    actions:
+      - type: exec
+        command: asciidoctor-epub3 README.adoc
+        component: asciidoctor
+        workdir: /projects/asciidoctor-che
+
